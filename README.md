@@ -9,15 +9,39 @@ Unity单选框，复选框，可代替unity自带Toggle组件，自定义配置�
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  下载拖入工程中
+2.  在要设置的按钮上添加Tab脚本
+3.  根据添加后，Inspector上的提示，设置鼠标移入及点击时的设置
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.	TabTxt： 按钮下的text
+2.  MultipleChoice:是否为复选框
+3.  IsOn:当前是否为选中状态，手动勾选的话，初始化时为默认选中状态
+
+鼠标移入状态设置
+1.	IsHoverImgActive： 鼠标移入改变显示状态
+2.	IsHoverTxtColor： 鼠标移入改变文字显示颜色	
+3.	IsHoverImgColor： 鼠标移入改变图片显示颜色
+	以上选中后根据提示设置相应内容即可
+
+选中时状态设置
+1.	IsOnImgActive：选中后改变图片显示状态
+2.	IsOnTxtColor: 选中后改变文字显示颜色
+3.	IsOnImgColor：选中后改变图片显示颜色
+	以上选中后根据提示设置相应内容即可
+	showPanel：为选中时需要显示的对象，通过setactive设置，可不设置
+
+4.	Tabcontroller：父级控制器，可手动配置，如果没有手动配置，会默认在直接父级上创建
+5.	TabName: 无实际作用，可给按钮设定标签名	
+
+API
+1.	TabClick（广播事件）：可获取当前点击的对象（类型：Tab），每次点击都能获取到
+2.	TabClickFirstEffect（广播事件）：可获取当前点击的对象（类型：Tab），仅获取第一次
+3.	text（属性）：可获取按钮下text的名称
+4.	IsOn：设置显示状态，TabClick和TabClickFirstEffect可获取到点击事件
+5.	IsOnWithOutEvent：仅改变状态，没有事件的触发
+
 
 #### 参与贡献
 
