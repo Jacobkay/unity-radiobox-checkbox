@@ -26,21 +26,31 @@ namespace ZTools
         private bool isHoverImgActive;
         [SerializeField]
         private GameObject hoverImg;
-        [Header("改变图片显示颜色")]
+        [Header("改变图片颜色")]
         [SerializeField]
         private bool isHoverImgColor;
-        [Header("改变文字显示颜色")]
+        [Header("改变文字颜色")]
         [SerializeField]
         private bool isHoverTxtColor;
+        [Header("改变文字尺寸")]
+        [SerializeField]
+        private bool isHoverTxtSize;
+        [SerializeField]
+        private int hoverFontSize;
         [SerializeField]
         [Header("改变图片显示状态")]
         [Header("---------------选中时状态设置----------------")]
         private bool isOnImgActive = false;
         [SerializeField]
-        [Header("改变文字显示颜色")]
+        [Header("改变文字颜色")]
         private bool isOnTxtColor = false;
         [SerializeField]
-        [Header("改变图片显示颜色")]
+        [Header("改变文字尺寸")]
+        private bool isOnTxtSize = false;
+        [SerializeField]
+        private int onFontSize;
+        [SerializeField]
+        [Header("改变图片颜色")]
         private bool isOnImgColor = false;
         [Header("父级控制器，可手动配置")]
         [Header("---------------------------------------------")]
@@ -76,14 +86,23 @@ namespace ZTools
         private Color origTxtColor;
         private Color origImgColor;
         private Color origHoverImgColor;
+        private int origTxtSize;
         /// <summary>
         /// 点击事件，选中状态再次点击有效
         /// </summary>
-        public event Action<Tab> TabClick;
+        public event Action<Tab> Focus;
         /// <summary>
         /// 点击事件，选中状态再次点击无效
         /// </summary>
-        public event Action<Tab> TabClickFirstEffect;
+        public event Action<Tab> FocusFirstEffect;
+        /// <summary>
+        /// 失去焦点
+        /// </summary>
+        public event Action<Tab> Blur;
+        /// <summary>
+        /// 失去焦点，第一次响应
+        /// </summary>
+        public event Action<Tab> BlurFirstEffect;
         private bool isInit = false;
         private int hash;
         public string text
@@ -105,13 +124,30 @@ namespace ZTools
         {
             set
             {
-                if (isOn != value && value)
-                    if (TabClickFirstEffect != null)
-                        TabClickFirstEffect.Invoke(this);
+                if (isOn != value)
+                {
+                    if (value)
+                    {
+                        if (null != FocusFirstEffect)
+                            FocusFirstEffect.Invoke(this);
+                    }
+                    else
+                    {
+                        if (null != BlurFirstEffect)
+                            BlurFirstEffect.Invoke(this);
+                    }
+                }
                 ChangeType(value);
                 if (isOn)
-                    if (TabClick != null)
-                        TabClick.Invoke(this);
+                {
+                    if (null != Focus)
+                        Focus.Invoke(this);
+                }
+                else
+                {
+                    if (null != Blur)
+                        Blur.Invoke(this);
+                }
             }
             get { return isOn; }
         }
@@ -149,7 +185,7 @@ namespace ZTools
         /// <summary>
         /// 保存当前状态
         /// </summary>
-        void InitData()
+        public void InitData()
         {
             isInit = true;
             if (isHoverTxtColor || isOnTxtColor)
@@ -157,6 +193,17 @@ namespace ZTools
                 if (null != tabTxt)
                 {
                     origTxtColor = tabTxt.color;
+                }
+                else
+                {
+                    Debug.LogError("tabTxt is null");
+                }
+            }
+            if (isHoverTxtSize || isOnTxtSize)
+            {
+                if (null != tabTxt)
+                {
+                    origTxtSize = tabTxt.fontSize;
                 }
                 else
                 {
@@ -217,6 +264,10 @@ namespace ZTools
             {
                 tabTxt.color = origTxtColor;
             }
+            if (isHoverTxtSize)
+            {
+                tabTxt.fontSize = origTxtSize;
+            }
             if (isOnTxtColor)
             {
                 tabTxt.color = (value) ? changeTxtColor : origTxtColor;
@@ -228,6 +279,10 @@ namespace ZTools
             if (isOnImgColor)
             {
                 tabChangeColorImg.color = (value) ? imgColor : origImgColor;
+            }
+            if (isOnTxtSize)
+            {
+                tabTxt.fontSize = (value) ? onFontSize : origTxtSize;
             }
             if (showPanel.Count > 0)
             {
@@ -266,6 +321,10 @@ namespace ZTools
             {
                 hoverImage.color = hoverImageColor;
             }
+            if (isHoverTxtSize && !isOn)
+            {
+                tabTxt.fontSize = hoverFontSize;
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -281,6 +340,10 @@ namespace ZTools
             if (isHoverImgColor && !isOn)
             {
                 hoverImage.color = origHoverImgColor;
+            }
+            if (isHoverTxtSize && !isOn)
+            {
+                tabTxt.fontSize = origTxtSize;
             }
         }
         private void OnDestroy()

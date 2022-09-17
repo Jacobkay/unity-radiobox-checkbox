@@ -9,10 +9,14 @@ namespace ZTools
     {
         private Tab tab;
         private SerializedObject tabClass;//序列化
-        private SerializedProperty isHoverImgActive, isHoverTxtColor, isHoverImgColor, hoverImage, hoverImageColor, hoverTxtColor, hoverImg, isOnTxtColor, isOnImgActive, isOnImgColor, tabChangeColorImg, changeTxtColor, imgColor, tabTxt, tabImg, isOn, showPanel, tabName, tabcontroller, multipleChoice;//定义类型，变量a，变量b
+        private SerializedProperty onFontSize, isOnTxtSize, hoverFontSize, isHoverTxtSize, isHoverImgActive, isHoverTxtColor, isHoverImgColor, hoverImage, hoverImageColor, hoverTxtColor, hoverImg, isOnTxtColor, isOnImgActive, isOnImgColor, tabChangeColorImg, changeTxtColor, imgColor, tabTxt, tabImg, isOn, showPanel, tabName, tabcontroller, multipleChoice;
         private void OnEnable()
         {
             tabClass = new SerializedObject(target);
+            onFontSize = tabClass.FindProperty("onFontSize");
+            isOnTxtSize = tabClass.FindProperty("isOnTxtSize");
+            hoverFontSize = tabClass.FindProperty("hoverFontSize");
+            isHoverTxtSize = tabClass.FindProperty("isHoverTxtSize");
             isOnTxtColor = tabClass.FindProperty("isOnTxtColor");
             isOnImgActive = tabClass.FindProperty("isOnImgActive");
             isOnImgColor = tabClass.FindProperty("isOnImgColor");
@@ -60,6 +64,11 @@ namespace ZTools
                 EditorGUILayout.PropertyField(hoverImage);
                 EditorGUILayout.PropertyField(hoverImageColor);
             }
+            EditorGUILayout.PropertyField(isHoverTxtSize);
+            if (isHoverTxtSize.boolValue)
+            {
+                EditorGUILayout.PropertyField(hoverFontSize);
+            }
             EditorGUILayout.PropertyField(isOnImgActive);
             if (isOnImgActive.boolValue)
             {
@@ -76,7 +85,12 @@ namespace ZTools
                 EditorGUILayout.PropertyField(tabChangeColorImg);
                 EditorGUILayout.PropertyField(imgColor);
             }
-            if (isOnTxtColor.boolValue || isOnImgActive.boolValue || isOnImgColor.boolValue)
+            EditorGUILayout.PropertyField(isOnTxtSize);
+            if (isOnTxtSize.boolValue)
+            {
+                EditorGUILayout.PropertyField(onFontSize);
+            }
+            if (isOnTxtColor.boolValue || isOnImgActive.boolValue || isOnImgColor.boolValue || isOnTxtSize.boolValue)
             {
                 EditorGUILayout.PropertyField(showPanel);
             }
