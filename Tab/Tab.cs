@@ -55,7 +55,7 @@ namespace ZTools
         [Header("父级控制器，可手动配置")]
         [Header("---------------------------------------------")]
         [SerializeField]
-        private TabController tabcontroller = null;
+        public TabController tabcontroller = null;
         [SerializeField]
         private Image tabImg;
         [SerializeField]
