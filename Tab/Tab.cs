@@ -74,12 +74,12 @@ namespace ZTools
         private List<GameObject> showPanel;
 
         private Button btnTab;
-        public TabController tabController
+        public TabController TabController
         {
             set
             {
                 tabcontroller = value;
-                tabController.AddTab(this);
+                value.AddTab(this);
             }
             get { return tabcontroller; }
         }
@@ -348,9 +348,9 @@ namespace ZTools
         }
         private void OnDestroy()
         {
-            if (tabController != null)
+            if (TabController != null)
             {
-                tabController.RemoveTab(this);
+                TabController.RemoveTab(this);
             }
         }
     }
