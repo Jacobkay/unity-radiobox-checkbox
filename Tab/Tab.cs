@@ -55,7 +55,7 @@ namespace ZTools
         [Header("父级控制器，可手动配置")]
         [Header("---------------------------------------------")]
         [SerializeField]
-        private TabController tabcontroller = null;
+        private TabController tabController = null;
         [SerializeField]
         private Image tabImg;
         [SerializeField]
@@ -78,10 +78,10 @@ namespace ZTools
         {
             set
             {
-                tabcontroller = value;
+                tabController = value;
                 value.AddTab(this);
             }
-            get { return tabcontroller; }
+            get { return tabController; }
         }
         private Color origTxtColor;
         private Color origImgColor;
