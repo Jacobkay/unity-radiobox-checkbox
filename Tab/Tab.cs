@@ -137,6 +137,10 @@ namespace ZTools
                             BlurFirstEffect.Invoke(this);
                     }
                 }
+                if (!isInit)
+                {
+                    InitData();
+                }
                 ChangeType(value);
                 if (isOn)
                 {
@@ -159,28 +163,17 @@ namespace ZTools
             }
         }
 
-        void Awake()
+        void Start()
         {
-            btnTab = this.GetComponent<Button>();
-            btnTab.transition = Selectable.Transition.None;
-            if (null == tabTxt)
-            {
-                tabTxt = transform.Find("Text").GetComponent<Text>();
-            }
-            hash = this.GetHashCode();
             if (!isInit)
             {
                 InitData();
+                if (isOn)
+                {
+                    isOn = false;
+                    IsOn = true;
+                }
             }
-            if (isOn)
-            {
-                isOn = false;
-                IsOn = true;
-            }
-            btnTab.onClick.AddListener(() =>
-            {
-                IsOn = (!multipleChoice) ? true : !IsOn;
-            });
         }
         /// <summary>
         /// 保存当前状态
@@ -188,6 +181,18 @@ namespace ZTools
         public void InitData()
         {
             isInit = true;
+            btnTab = this.GetComponent<Button>();
+            btnTab.transition = Selectable.Transition.None;
+            if (null == tabTxt)
+            {
+                tabTxt = transform.Find("Text").GetComponent<Text>();
+            }
+            hash = this.GetHashCode();
+            btnTab.onClick.AddListener(() =>
+            {
+                IsOn = (!multipleChoice) ? true : !IsOn;
+            });
+
             if (isHoverTxtColor || isOnTxtColor)
             {
                 if (null != tabTxt)
@@ -238,10 +243,7 @@ namespace ZTools
                 {
                     tabController = (this.transform.parent.GetComponent<TabController>() == null) ? this.transform.parent.gameObject.AddComponent<TabController>() : this.transform.parent.GetComponent<TabController>();
                 }
-                else
-                {
-                    tabController.AddTab(this);
-                }
+                tabController.AddTab(this);
             }
         }
         /// <summary>
