@@ -35,7 +35,7 @@ namespace ZTools
             showPanel = tabClass.FindProperty("showPanel");
             tabName = tabClass.FindProperty("tabName");
             hoverImg = tabClass.FindProperty("hoverImg");
-            tabcontroller = tabClass.FindProperty("tabcontroller");
+            tabcontroller = tabClass.FindProperty("tabController");
             multipleChoice = tabClass.FindProperty("multipleChoice");
         }
         public override void OnInspectorGUI()
